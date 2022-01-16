@@ -1,50 +1,50 @@
 <template>
-  <div class="section__wrapper">
-    <label for="client">Сześć 👋, zacznij pisać i wybierz swoje imię </label>
-
-    <input
-      id="client"
-      v-model="inputName"
-      type="text"
-      autocomplete="off"
-      @input="autocomplete"
-    />
-    <div class="autocomplete-list__wrapper">
-      <div class="autocomplete-list">
-        <li
-          v-for="name in nameVariants"
-          :key="name"
-          class="autocomplete-list__item"
-          @click="selected(name)"
-        >
-          {{ name }}
-        </li>
+  <div class="client-login__wrapper">
+    <div class="client-login__inner">
+      <span>Сześć 👋, zacznij pisać i wybierz swoje imię </span>
+      <div class="client-login">
+        <input
+          placeholder="Login"
+          v-model="inputName"
+          type="text"
+          autocomplete="off"
+          @input="autocomplete"
+        />
+        <div class="client-login__autocomplete__wrapper">
+          <div class="client-login__autocomplete">
+            <li
+              v-for="name in nameVariants"
+              :key="name"
+              class="client-login__autocomplete__item"
+              @click="selected(name)"
+            >
+              {{ name }}
+            </li>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, onMounted } from "vue";
-import ClientTypes from "../types/ClientTypes";
-
-import { useStore } from "vuex";
+import { defineComponent, ref } from "vue";
+import { useStore, mapGetters } from "vuex";
 import { key } from "../store/store";
 
 export default defineComponent({
-  setup() {
+  setup(props, { emit }) {
     const store = useStore(key);
 
     //Search name
     const inputName = ref<string>("");
     const nameVariants = ref<string[]>([]);
+
     const autocomplete = () => {
       if (inputName.value) {
-        nameVariants.value = store.getters.getNames.filter(
-          (name: string) => {
-            return name.toLowerCase().includes(inputName.value);
-          }
-        );
+        nameVariants.value = store.getters.GET_NAMES.filter((name: string) => {
+          return name.toLowerCase().includes(inputName.value);
+        });
       }
     };
     //number of autocompletes
@@ -61,15 +61,30 @@ export default defineComponent({
     }
     //selected name
     const selected = (select: string) => {
-      store.commit("setClientName", select);
+      store.commit("SET_CLIENT_NAME", select);
+      emit("login");
     };
 
-    return { inputName,  nameVariants, autocomplete, selected };
+    return { inputName, nameVariants, autocomplete, selected };
   },
 });
 </script>
 <style scoped>
-.section__wrapper {
+.client-login__wrapper {
+  width: 100%;
+
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.client-login__inner {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.client-login {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,18 +92,18 @@ export default defineComponent({
   flex-wrap: wrap;
 }
 
-.autocomplete-list__wrapper {
+.client-login__autocomplete__wrapper {
   position: relative;
   width: 200px;
   z-index: 20;
 }
-.autocomplete-list {
+.client-login__autocomplete {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.autocomplete-list__item {
+.client-login__autocomplete__item {
   width: 200px;
   list-style: none;
   padding: 5px 10px;
@@ -96,7 +111,7 @@ export default defineComponent({
   cursor: pointer;
   color: black;
 }
-.autocomplete-list__item :hover {
-  background-color: rgba(151, 151, 151, 0.8);
+.client-login__autocomplete__item :hover {
+  background-color: rgba(151, 151, 151);
 }
 </style>

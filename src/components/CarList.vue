@@ -1,8 +1,9 @@
 <template>
   <div>
-    <h1>Wybierz samochód</h1>
+    <h2>Wybierz samochód</h2>
     <ul class="car-list">
       <li
+        style="cursor: pointer"
         class="main-style"
         v-for="car in store.state.cars"
         :key="car.id"
@@ -11,7 +12,20 @@
         <h2>{{ car.brand }}</h2>
         <div class="list-item">
           <span class="list-title">Cena za dobę:</span>
-          <p style="color: green">{{ car.price }}pln</p>
+          <div>
+            <p
+              :style="[
+                store.state.drivingExp < 4
+                  ? 'text-decoration: line-through; color: grey'
+                  : 'text-decoration: none; color: green',
+              ]"
+            >
+              {{ car.price }}pln
+            </p>
+            <p v-if="store.state.drivingExp < 4" style="color: green">
+              {{ car.price + (car.price / 100) * 20 }}pln
+            </p>
+          </div>
         </div>
         <div class="list-item">
           <span class="list-title">Segment:</span>
@@ -55,21 +69,20 @@ export default defineComponent({
         message.value = "";
       }, 1000);
     };
-
     //Select car
     const selectedCar = (car: CarTypes) => {
       if (!store.state.clientName) {
         warnMessage("Wybierz swoje imię");
         return;
       }
-      //    
+      //
       store.state.cars.forEach((item: CarTypes) => {
         if (car.id === item.id) {
           if (!item.status) {
             warnMessage("Sorry, ten samochód nie jest dostępny dla Ciebie 😟");
           } else {
-            emit("selectCar", car);
-            // store.state.count = 1;
+            store.commit("SET_SELECTED_CAR", car);
+            emit("selectCar");
           }
         }
       });
@@ -80,29 +93,28 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-h1 {
+h2 {
   text-align: center;
+  margin: 20px auto;
 }
 .car-list {
-  padding: 0 10%;
-  margin: 40px auto;
+  padding: 0 5%;
+  margin: 20px auto;
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  justify-content: flex-start;
   align-items: baseline;
-  justify-content: center;
 }
 
 .car-list li {
-  width: 200px;
-  height: 200px;
-  padding: 16px;
-
+  width: 250px;
+  height: 250px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  gap: 4px;
-
+  gap: 8px;
   list-style-type: none;
 }
 
@@ -119,12 +131,7 @@ h1 {
   text-transform: capitalize;
 }
 
-.list-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 20px;
-}
+
 .list-item p {
   font-weight: 600;
   text-transform: uppercase;

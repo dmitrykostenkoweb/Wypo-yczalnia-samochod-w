@@ -1,11 +1,15 @@
 <template>
   <div class="app">
-    <client-login v-if="!store.state.clientName" />
-    <client-profile />
-    <button class="main-style car-btn" @click="showCars">
-      {{ showCarBtn }}
-    </button>
-    <car-list v-if="showCarList" />
+    <header
+      class="header main-style"
+      :style="[store.state.drivingExp < 4 ? 'margin-bottom: 180px;' : 'margin-bottom: 0px;' ]"
+    >
+      <h1>Carsharing</h1>
+      <client-login v-if="!store.state.clientName" @login="login" />
+      <client-profile />
+    </header>
+    <car-list v-if="!selectCar" @selectCar="isSelectCar" />
+    <rental-period v-else />
   </div>
 </template>
 
@@ -16,30 +20,38 @@ import ClientTypes from "./types/ClientTypes";
 import "./assets/global.css";
 import ClientLogin from "./components/ClientLogin.vue";
 import ClientProfile from "./components/ClientProfile.vue";
+import RentalPeriod from "./components/RentalPeriod.vue";
 
 import { useStore } from "vuex";
 import { key } from "./store/store";
 
 export default defineComponent({
   name: "App",
-  components: { CarList, ClientLogin, ClientProfile },
+  components: {
+    CarList,
+    ClientLogin,
+    ClientProfile,
+    RentalPeriod,
+  },
+
   setup() {
     const store = useStore(key);
+    ///btn
 
     const calcDrivingExp = () => {
-      if (store.getters.getName) {
+      if (store.getters.GET_NAMES) {
         let drivingDate = "";
 
-        const client = store.state.clients.filter((item: ClientTypes) => {
+        const a = store.state.clients.filter((item: ClientTypes) => {
           return item.fullName === store.state.clientName;
         });
 
-        client.map((item: ClientTypes) => {
+        a.map((item: ClientTypes) => {
           drivingDate = item.drivingDate;
         });
 
         store.commit(
-          "setDrivingExp",
+          "SET_DRIVING_EXP",
           Math.round(
             Math.abs(new Date().valueOf() - new Date(drivingDate).valueOf()) /
               86400000 /
@@ -48,37 +60,46 @@ export default defineComponent({
         );
       }
     };
-
-    const showCarList = ref<boolean>(false);
-    const showCarBtn = ref<string>("Samochody");
-
-    const showCars = () => {
-      showCarList.value = !showCarList.value;
-      if (showCarList.value == true) {
-        showCarBtn.value = "Ukryć Samochody";
-      } else {
-        showCarBtn.value = "Samochody";
-      }
+    const login = () => {
       calcDrivingExp();
-      store.commit("changeCarStatus");
+      store.commit("CHANGE_CAR_STATUS");
+    };
+
+    const selectCar = ref<boolean>();
+    const isSelectCar = () => {
+      selectCar.value = true;
     };
 
     return {
       store,
-      showCarList,
-      showCarBtn,
-      showCars,
+      login,
+      isSelectCar,
+      selectCar,
     };
   },
 });
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap");
 .app {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+h1 {
+  font-family: "Bungee Shade", cursive;
+}
+.header {
+  width: 100%;
+  border-radius: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header-margin-bottom {
+  margin-bottom: 200px;
 }
 </style>

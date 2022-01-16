@@ -10,6 +10,10 @@ export interface State {
   clientName: string;
   drivingExp: number;
   cars: CarTypes[];
+  selectedCar: CarTypes[];
+  rentalDays: number;
+  extraDays: number;
+  toPay: number;
 }
 
 // define injection key
@@ -111,32 +115,40 @@ export const store = createStore<State>({
         status: true,
       },
     ],
+    selectedCar: [],
+    //date
+    rentalDays: 0,
+    extraDays: 0,
+    toPay: 0,
   },
   getters: {
     //Clients
-    getNames(state) {
+    GET_NAMES(state) {
       return state.clients.map((item: ClientTypes) => {
         return item.fullName;
       });
     },
-    getClient(state) {
+    GET_CLIENT(state): ClientTypes[] {
       return state.clients.filter((item: ClientTypes) => {
         return item.fullName == state.clientName;
       });
     },
-    getName: state => state.clientName
   },
   mutations: {
-    //Clients
-    setClientName(state, select: string) {
-      state.clientName = select;
-    },
-    setDrivingExp(state, exp) {
-      state.drivingExp = exp;
+    //date
+    SET_RENT_DAYS(state, days: number) {
+      state.rentalDays = days;
     },
 
+    //Clients
+    SET_CLIENT_NAME(state, select: string) {
+      state.clientName = select;
+    },
+    SET_DRIVING_EXP(state, exp) {
+      state.drivingExp = exp;
+    },
     //Cars
-    changeCarStatus(state) {
+    CHANGE_CAR_STATUS(state) {
       if (state.drivingExp && state.drivingExp < 4) {
         state.cars.forEach((item: CarTypes) => {
           if (item.segment === "premium") {
@@ -145,6 +157,14 @@ export const store = createStore<State>({
         });
       }
     },
+    SET_SELECTED_CAR(state, select) {
+      state.selectedCar = [];
+      state.selectedCar.push(select);
+    },
+    SET_PAY_SUM(state, sum) {
+      state.toPay = sum;
+    },
   },
+
   actions: {},
 });
