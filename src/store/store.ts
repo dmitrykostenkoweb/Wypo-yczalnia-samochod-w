@@ -3,18 +3,8 @@ import { InjectionKey } from "vue";
 import { createStore, Store } from "vuex";
 import ClientTypes from "@/types/ClientTypes";
 import CarTypes from "@/types/CarTypes";
-
+import State from "@/types/StateTypes";
 // define your typings for the store state
-export interface State {
-  clients: ClientTypes[];
-  clientName: string;
-  drivingExp: number;
-  cars: CarTypes[];
-  selectedCar: CarTypes[];
-  rentalDays: number;
-  extraDays: number;
-  toPay: number;
-}
 
 // define injection key
 export const key: InjectionKey<Store<State>> = Symbol();

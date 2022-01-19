@@ -39,8 +39,7 @@
           <span
             style="color: red; margin-top: 16px; text-align: center"
             class="list-title"
-            >Sorry, ten samochód nie jest dostępny dla Ciebie 😟</span
-          >
+            >Sorry, ten samochód nie jest dostępny dla Ciebie 😟</span>
         </div>
       </li>
     </ul>
@@ -49,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import CarTypes from "../types/CarTypes";
 import WarningMessage from "./WarningMessage.vue";
 
@@ -67,7 +66,7 @@ export default defineComponent({
       message.value = youMessage;
       setTimeout(() => {
         message.value = "";
-      }, 1000);
+      }, 2000);
     };
     //Select car
     const selectedCar = (car: CarTypes) => {
@@ -88,7 +87,8 @@ export default defineComponent({
       });
     };
 
-    return { store, selectedCar, message };
+    const carImageData = ref<any>([]);
+    return { store, selectedCar, message, carImageData };
   },
 });
 </script>
@@ -130,8 +130,6 @@ h2 {
 .list-item h2 {
   text-transform: capitalize;
 }
-
-
 .list-item p {
   font-weight: 600;
   text-transform: uppercase;

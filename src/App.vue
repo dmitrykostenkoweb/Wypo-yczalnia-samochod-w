@@ -2,9 +2,16 @@
   <div class="app">
     <header
       class="header main-style"
-      :style="[store.state.drivingExp < 4 ? 'margin-bottom: 180px;' : 'margin-bottom: 0px;' ]"
+      :style="[
+        store.state.drivingExp < 4
+          ? 'margin-bottom: 180px;'
+          : 'margin-bottom: 0px;',
+      ]"
     >
-      <h1>Carsharing</h1>
+      <div class="logo">
+        <img src="./assets/logo.png" alt="" />
+      </div>
+
       <client-login v-if="!store.state.clientName" @login="login" />
       <client-profile />
     </header>
@@ -81,17 +88,18 @@ export default defineComponent({
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap");
 .app {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-h1 {
-  font-family: "Bungee Shade", cursive;
+
+.logo img {
+width: 50px;
+margin: 8px;
 }
+
 .header {
   width: 100%;
   border-radius: none;

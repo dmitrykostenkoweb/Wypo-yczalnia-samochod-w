@@ -57,7 +57,7 @@ export default defineComponent({
       message.value = youMessage;
       setTimeout(() => {
         message.value = "";
-      }, 1000);
+      }, 2000);
     };
 
     const startDate = ref<string>("");

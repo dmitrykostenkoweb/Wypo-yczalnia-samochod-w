@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useStore, mapGetters } from "vuex";
+import { useStore } from "vuex";
 import { key } from "../store/store";
 
 export default defineComponent({
@@ -43,7 +43,7 @@ export default defineComponent({
     const autocomplete = () => {
       if (inputName.value) {
         nameVariants.value = store.getters.GET_NAMES.filter((name: string) => {
-          return name.toLowerCase().includes(inputName.value);
+          return name.toLowerCase().includes(inputName.value.toLowerCase());
         });
       }
     };
