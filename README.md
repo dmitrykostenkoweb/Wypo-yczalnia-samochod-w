@@ -1,4 +1,6 @@
 
+# Deploy
+https://rent-car-grupa-4.herokuapp.com/
 # Funkcjonalność
 Aplikacja daje możliwość wyświetlenia listy wszystkich klientów wypożyczalni oraz listy wszystkich samochodów. Lista klientów musi zawierać: Id klienta, jego imię i nazwisko oraz datę uzyskania prawa jazdy. Lista samochodów musi zawierać Id samochodu, markę wraz z modelem, segment, rodzaj paliwa, cenę wypożyczenia za dobę oraz status. Ponadto aplikacja daje możliwość wypożyczenia samochodu przez Klienta. Wybieramy Klienta, którego obsługujemy. Następnie wprowadzamy preferencje Klienta, tzn: segment samochodu jaki chce wypożyczyć, rodzaj paliwa pojazdu oraz oczywiście okres (ilość dni) na jaki pragnie wypożyczyć samochód. Jeżeli w aktualnie w ofercie posiadamy samochód spełniający kryteria Klienta, następuje proces wypożyczenia i wyświetlamy wszystkie dane na temat wypożyczenia: Data wypożyczenia, Imię i nazwisko Klienta, Data zwrotu pojazdu, marka i model pojazdu oraz całkowitą cenę za wypożyczenie. Jeżeli nie mamy aktualnie w ofercie pojazdu spełniającego kryteria, wyświetlamy informacje o braku odpowiedniego samochodu. Nastepnie ponownie dajemy możliwość zawarcia innego wypożyczenia.
 
